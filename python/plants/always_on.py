@@ -23,10 +23,10 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 def alwaysOn(strip):
   """All on at quarter brightness"""
-  for i in range(strip.numPixels()):
-    color = Color(70, 70,70)
-    strip.setPixelColor(i, color)
-    strip.show()
+  # for i in range(strip.numPixels()):
+  color = Color(70, 0, 0)
+  strip.setPixelColor(range(0,5), color)
+  strip.show()
     
 
 # Define functions which animate LEDs in various ways.
