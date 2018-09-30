@@ -25,12 +25,12 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 
 def timer(strip):
-  on_time = (13,8)
+  on_time = (13,50)
   # off_time = (13,6)
   # on_time2 = (13,7)
   seconds = get_delta_seconds(on_time)
   print(seconds)
-  t = Timer(seconds, allOn(strip))
+  t = Timer(seconds, allOn, [strip])
   t.start()
   
 
