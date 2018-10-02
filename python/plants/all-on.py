@@ -23,7 +23,7 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 def all_on(strip):
   """All on at quarter brightness"""
   for i in range(strip.numPixels()):
-    color = Color(255, 255, 255)
+    color = Color(0, 255, 255)
     strip.setPixelColor(i, color)
   strip.show() 
 
