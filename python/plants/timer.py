@@ -26,6 +26,7 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 class StartThread(Thread):
     def __init__(self, strip, on_time):
         Thread.__init__(self)
+        daemon = True
         self.strip = strip
         self.delay = get_delta_seconds(on_time)
 
@@ -38,6 +39,7 @@ class StartThread(Thread):
 class StopThread(Thread):
   def __init__(self, strip, off_time):
     Thread.__init__(self)
+    daemon = True
     self.strip = strip
     self.off_time = off_time
     self.delay = get_delta_seconds(off_time)
@@ -47,16 +49,6 @@ class StopThread(Thread):
     print(self.delay)
     Event().wait(self.delay)
     all_off(self.strip)
-
-
-def timer(strip):
-  on_time = (13,50)
-  # off_time = (13,6)
-  # on_time2 = (13,7)
-  seconds = get_delta_seconds(on_time)
-  print(seconds)
-  t = Timer(seconds, all_on, [strip])
-  t.start()
   
 
 def get_delta_seconds(future_timer):
