@@ -90,8 +90,8 @@ if __name__ == '__main__':
     strip.begin()
 
     print("Timer set!")
-    on_time = (18,0)
-    off_time = (18,1)
+    on_time = (20,7)
+    off_time = (20,8)
     stopFlag = Event()
     start_thread = StartThread(strip, on_time)
     start_thread.start()
