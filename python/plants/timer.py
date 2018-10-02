@@ -10,7 +10,7 @@ from neopixel import *
 import argparse
 
 from datetime import datetime
-from threading import Timer
+from threading import Timer, Thread, Event
 
 # LED strip configuration:
 LED_COUNT      = 600      # Number of LED pixels.
@@ -23,6 +23,28 @@ LED_INVERT     = False   # True to invert the signal (when using NPN transistor 
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 
+class StartThread(Thread):
+    def __init__(self, strip, on_time):
+        Thread.__init__(self)
+        self.strip = strip
+        self.on_time = on_time
+
+    def run(self):
+      Event().wait(5)
+      all_on(self.strip)
+      # call a function
+
+
+class StopThread(Thread):
+  def __init__(self, strip, off_time):
+    Thread.__init__(self)
+    self.strip = strip
+    self.off_time = off_time
+
+  def run(self):
+    Event().wait(10)
+    all_off(self.strip)
+
 
 def timer(strip):
   on_time = (13,50)
@@ -30,7 +52,7 @@ def timer(strip):
   # on_time2 = (13,7)
   seconds = get_delta_seconds(on_time)
   print(seconds)
-  t = Timer(seconds, allOn, [strip])
+  t = Timer(seconds, all_on, [strip])
   t.start()
   
 
@@ -40,76 +62,19 @@ def get_delta_seconds(future_timer):
   delta_t = future_time - now
   return delta_t.seconds + 1
 
-def allOn(strip):
+def all_on(strip):
   """All on at quarter brightness"""
   for i in range(strip.numPixels()):
     color = Color(70, 70, 70)
     strip.setPixelColor(i, color)
   strip.show() 
 
-def allOff(strip):
+def all_off(strip):
   """All off"""
   for i in range(strip.numPixels()):
     color = Color(0, 0, 0)
     strip.setPixelColor(i, color)
   strip.show()    
-
-# Define functions which animate LEDs in various ways.
-def colorWipe(strip, color, wait_ms=50):
-    """Wipe color across display a pixel at a time."""
-    for i in range(strip.numPixels()):
-        strip.setPixelColor(i, color)
-        strip.show()
-        time.sleep(wait_ms/1000.0)
-
-def theaterChase(strip, color, wait_ms=50, iterations=10):
-    """Movie theater light style chaser animation."""
-    for j in range(iterations):
-        for q in range(3):
-            for i in range(0, strip.numPixels(), 3):
-                strip.setPixelColor(i+q, color)
-            strip.show()
-            time.sleep(wait_ms/1000.0)
-            for i in range(0, strip.numPixels(), 3):
-                strip.setPixelColor(i+q, 0)
-
-def wheel(pos):
-    """Generate rainbow colors across 0-255 positions."""
-    if pos < 85:
-        return Color(pos * 3, 255 - pos * 3, 0)
-    elif pos < 170:
-        pos -= 85
-        return Color(255 - pos * 3, 0, pos * 3)
-    else:
-        pos -= 170
-        return Color(0, pos * 3, 255 - pos * 3)
-
-def rainbow(strip, wait_ms=20, iterations=1):
-    """Draw rainbow that fades across all pixels at once."""
-    for j in range(256*iterations):
-        for i in range(strip.numPixels()):
-            strip.setPixelColor(i, wheel((i+j) & 255))
-        strip.show()
-        time.sleep(wait_ms/1000.0)
-
-def rainbowCycle(strip, wait_ms=20, iterations=5):
-    """Draw rainbow that uniformly distributes itself across all pixels."""
-    for j in range(256*iterations):
-        for i in range(strip.numPixels()):
-            strip.setPixelColor(i, wheel((int(i * 256 / strip.numPixels()) + j) & 255))
-        strip.show()
-        time.sleep(wait_ms/1000.0)
-
-def theaterChaseRainbow(strip, wait_ms=50):
-    """Rainbow movie theater light style chaser animation."""
-    for j in range(256):
-        for q in range(3):
-            for i in range(0, strip.numPixels(), 3):
-                strip.setPixelColor(i+q, wheel((i+j) % 255))
-            strip.show()
-            time.sleep(wait_ms/1000.0)
-            for i in range(0, strip.numPixels(), 3):
-                strip.setPixelColor(i+q, 0)
 
 # Main program logic follows:
 if __name__ == '__main__':
@@ -124,28 +89,11 @@ if __name__ == '__main__':
     strip.begin()
 
     print("Timer set!")
-    timer(strip)
+    on_time = (19,30)
+    off_time = (19,31)
+    stopFlag = Event()
+    start_thread = StartThread(strip, on_time)
+    start_thread.start()
 
-    # print ('Press Ctrl-C to quit.')
-    # if not args.clear:
-    #     print('Use "-c" argument to clear LEDs on exit')
-
-    # try:
-
-    #     while True:
-    #         print ('Color wipe animations.')
-    #         colorWipe(strip, Color(255, 0, 0))  # Red wipe
-    #         colorWipe(strip, Color(0, 255, 0))  # Blue wipe
-    #         colorWipe(strip, Color(0, 0, 255))  # Green wipe
-    #         print ('Theater chase animations.')
-    #         theaterChase(strip, Color(127, 127, 127))  # White theater chase
-    #         theaterChase(strip, Color(127,   0,   0))  # Red theater chase
-    #         theaterChase(strip, Color(  0,   0, 127))  # Blue theater chase
-    #         print ('Rainbow animations.')
-    #         rainbow(strip)
-    #         rainbowCycle(strip)
-    #         theaterChaseRainbow(strip)
-
-    # except KeyboardInterrupt:
-    #     if args.clear:
-    #         colorWipe(strip, Color(0,0,0), 10)
+    stop_thread = StopThread(strip, off_time)
+    stop_thread.start()
