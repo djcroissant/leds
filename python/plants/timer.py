@@ -27,12 +27,11 @@ class StartThread(Thread):
     def __init__(self, strip, on_time):
         Thread.__init__(self)
         self.strip = strip
-        self.on_time = on_time
+        self.delay = get_delta_seconds(on_time)
 
     def run(self):
-      Event().wait(5)
+      Event().wait(self.delay)
       all_on(self.strip)
-      # call a function
 
 
 class StopThread(Thread):
@@ -40,9 +39,11 @@ class StopThread(Thread):
     Thread.__init__(self)
     self.strip = strip
     self.off_time = off_time
+    self.delay = get_delta_seconds(off_time)
+
 
   def run(self):
-    Event().wait(10)
+    Event().wait(self.delay)
     all_off(self.strip)
 
 
@@ -89,8 +90,8 @@ if __name__ == '__main__':
     strip.begin()
 
     print("Timer set!")
-    on_time = (19,30)
-    off_time = (19,31)
+    on_time = (18,0)
+    off_time = (18,1)
     stopFlag = Event()
     start_thread = StartThread(strip, on_time)
     start_thread.start()
