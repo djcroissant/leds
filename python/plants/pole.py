@@ -9,11 +9,8 @@ import time
 from neopixel import *
 import argparse
 
-from datetime import datetime
-from threading import Timer, Thread, Event
-
 # LED strip configuration:
-LED_COUNT      = 600      # Number of LED pixels.
+LED_COUNT      = 594      # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 #LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -23,48 +20,38 @@ LED_INVERT     = False   # True to invert the signal (when using NPN transistor 
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 
-class StartThread(Thread):
-    def __init__(self, strip, on_time):
-        Thread.__init__(self)
-        daemon = True
-        self.strip = strip
-        self.delay = get_delta_seconds(on_time)
-
-    def run(self):
-      print(self.delay)
-      Event().wait(self.delay)
-      all_on(self.strip)
-
-
-class StopThread(Thread):
-  def __init__(self, strip, off_time):
-    Thread.__init__(self)
-    daemon = True
-    self.strip = strip
-    self.off_time = off_time
-    self.delay = get_delta_seconds(off_time)
-
-
-  def run(self):
-    print(self.delay)
-    Event().wait(self.delay)
-    all_off(self.strip)
-  
-
-def get_delta_seconds(future_timer):
-  now = datetime.now()
-  future_time = now.replace(hour=future_timer[0], minute = future_timer[1])
-  delta_t = future_time - now
-  return delta_t.seconds + 1
-
 def all_on(strip):
-  """All on at quarter brightness"""
+  """(green, red, blue)"""
+  red = 100
+  green = 1
+  blue = 10
+  
+  # turn all off
   for i in range(strip.numPixels()):
-    color = Color(70, 70, 70)
+    color = Color(0, 0, 0)
     strip.setPixelColor(i, color)
-  strip.show() 
+  strip.show()
 
-def all_off(strip):
+  for lum in range(red):
+    for i in range(strip.numPixels()):
+      color = Color(0, lum, 0)
+      strip.setPixelColor(i, color)
+    strip.show()
+
+  for lum in range(green):
+    for i in range(strip.numPixels()):
+      color = Color(lum, red, 0)
+      strip.setPixelColor(i, color)
+    strip.show()
+
+  for lum in range(blue):
+    for i in range(strip.numPixels()):
+      color = Color(green, red, lum)
+      strip.setPixelColor(i, color)
+    strip.show()
+ 
+
+def allOff(strip):
   """All off"""
   for i in range(strip.numPixels()):
     color = Color(0, 0, 0)
@@ -83,12 +70,5 @@ if __name__ == '__main__':
     # Intialize the library (must be called once before other functions).
     strip.begin()
 
-    print("Timer set!")
-    on_time = (7,9)
-    off_time = (7,10)
-    stopFlag = Event()
-    start_thread = StartThread(strip, on_time)
-    start_thread.start()
-
-    stop_thread = StopThread(strip, off_time)
-    stop_thread.start()
+    print("Light's are on!")
+    all_on(strip)

@@ -10,7 +10,7 @@ from neopixel import *
 import argparse
 
 # LED strip configuration:
-LED_COUNT      = 600      # Number of LED pixels.
+LED_COUNT      = 594      # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 #LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -22,8 +22,9 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 def all_on(strip):
   """All on at quarter brightness"""
+  """(green, red, blue)"""
   for i in range(strip.numPixels()):
-    color = Color(0, 255, 255)
+    color = Color(100, 255, 255)
     strip.setPixelColor(i, color)
   strip.show() 
 
