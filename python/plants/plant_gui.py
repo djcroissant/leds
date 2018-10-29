@@ -2,7 +2,7 @@
 from tkinter import *
 from tkinter import ttk
 
-# import init_strip
+import init_strip
 # import timer_threading
 import led_functions
 
