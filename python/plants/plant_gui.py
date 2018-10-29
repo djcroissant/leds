@@ -92,7 +92,7 @@ lbl.grid(row=srow+2, column=scol+0)
 
 # apply_slider handler
 def apply_slider_click():
-  print('slider!')
+  custom_on(strip, red.get(), green.get(), blue.get())
 
 # apply_slider properties
 apply_slider = Button(slider_frame, text="Apply Slider", command=apply_slider_click)
@@ -117,7 +117,7 @@ def apply_preset_click():
   # check value, call function by same name
   val = preset_drop.get()
   preset_lookup = {"dark and moody": dark_and_moody, "sultry dancing": sultry_dancing, "awake evening": awake_evening}
-  preset_lookup[val]()
+  preset_lookup[val](strip)
 
 # apply_preset button
 apply_preset = Button(preset_frame, text="Apply Preset", command=apply_preset_click)
@@ -131,11 +131,11 @@ master_toggle_frame.pack()
 
 # master_on click handler
 def master_on_click():
-  print('on!')
+  all_on(strip)
 
 # master_off click handler
 def master_off_click():
-  print('off!')
+  all_off(strip)
 
 # master_on button properties
 master_on = Button(master_toggle_frame, text="Lights ON", command=master_on_click)

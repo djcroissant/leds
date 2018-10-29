@@ -10,6 +10,9 @@ def all_on(strip):
   blue = 255
   transition(strip, red, green, blue)
 
+def custom_on(strip, red, green, blue):
+  transition(strip, red, green, blue)
+
 def awake_evening(strip):
   red = 100
   green = 30
