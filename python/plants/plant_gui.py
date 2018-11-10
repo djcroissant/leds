@@ -2,9 +2,10 @@
 from tkinter import *
 from tkinter import ttk
 
-import init_strip
+from neopixel import *
+from init_strip import *
 # import timer_threading
-import led_functions
+from led_functions import *
 
 root = Tk()
  

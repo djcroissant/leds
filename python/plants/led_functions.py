@@ -1,3 +1,5 @@
+from neopixel import *
+
 def all_off(strip):
   for i in range(strip.numPixels()):
     color = Color(0, 0, 0)
