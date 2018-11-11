@@ -38,12 +38,12 @@ def sunrise(strip, reverse=False):
       Green comes in during 2nd third
       Blue comes in during final third """
   duration = 30     # event duration in minutes
-  iterations = 255 * 5 / 3    # required to bring color in phases
+  iterations = int(255 * 5 / 3)    # required to bring color in phases
   wait_ms = duration * 60 * 1000 / iterations  # time to wait between each increment
 
   arr = list(range(255))
-  fill_on_half = [255] * (iterations - len(arr)) / 2
-  fill_off_half = [0] * (iterations - len(arr)) / 2
+  fill_on_half = [255] * int((iterations - len(arr)) / 2)
+  fill_off_half = [0] * int((iterations - len(arr)) / 2)
   red = arr.extend(fill_on_half).extend(fill_off_half)
   green = fill_off_half.extend(arr).extend(fill_on_half)
   blue = fill_off_half.extend(fill_off_half).extend(arr)
@@ -54,7 +54,7 @@ def sunrise(strip, reverse=False):
     blue = blue[::-1]
 
 
-  for i in iterations:
+  for i in range(iterations):
     color = Color(red[i], green[i], blue[i])
     for j in range(num_pixels):
       strip.setPixelColor(j, color)

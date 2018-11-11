@@ -18,7 +18,7 @@ class TimerThread(Thread):
     if self.recur:
       day_delay = 24*60*60    # 24 hrs -> seconds
       while not self.stopped.wait(day_delay):
-            print("I'm repeating!")
+            self.led_func(self.strip)
 
   def get_delta_seconds(self, hour, minute):
     now = datetime.now()
