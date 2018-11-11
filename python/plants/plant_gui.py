@@ -22,7 +22,7 @@ root.geometry('550x600')
 
 #### TIMER SECTION ####
 class TimerGroup(LedControler):
-  def __init__(self, frame, ref=[0,0], title="", led_func, strip):
+  def __init__(self, frame, ref=[0,0], led_func, strip, title=""):
     row = ref[0]
     col = ref[1]
     
@@ -85,11 +85,11 @@ timer_frame=Frame(root)
 timer_frame.pack()
 turn_on_frame = Frame(timer_frame, bd=2, relief="groove", padx=20, pady=20)
 turn_on_frame.pack(side=LEFT)
-turn_on_timer = TimerGroup(turn_on_frame, [0,0], "set a time to turn on", sunrise, strip)
+turn_on_timer = TimerGroup(turn_on_frame, [0,0], sunrise, strip, "set a time to turn on")
 
 turn_off_frame = Frame(timer_frame, bd=2, relief="groove", padx=20, pady=20)
 turn_off_frame.pack(side=LEFT)
-turn_off_timer = TimerGroup(turn_off_frame, [0,4], "set a time to turn on", sunset, strip)
+turn_off_timer = TimerGroup(turn_off_frame, [0,4], sunset, strip, "set a time to turn on")
 
 
 #### SLIDER SECTION ####
