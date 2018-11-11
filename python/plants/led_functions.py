@@ -1,4 +1,5 @@
 from neopixel import *
+import time
 
 def all_off(strip):
   for i in range(strip.numPixels()):
@@ -39,14 +40,21 @@ def sunrise(strip, reverse=False):
       Blue comes in during final third """
   duration = 30     # event duration in minutes
   iterations = int(255 * 5 / 3)    # required to bring color in phases
-  wait_ms = duration * 60 * 1000 / iterations  # time to wait between each increment
+  wait_sec = duration * 60 / iterations  # time to wait between each increment
 
   arr = list(range(255))
   fill_on_half = [255] * int((iterations - len(arr)) / 2)
+
   fill_off_half = [0] * int((iterations - len(arr)) / 2)
-  red = arr.extend(fill_on_half).extend(fill_off_half)
-  green = fill_off_half.extend(arr).extend(fill_on_half)
-  blue = fill_off_half.extend(fill_off_half).extend(arr)
+  red = arr
+  red.extend(fill_on_half)
+  red.extend(fill_off_half)
+  green = fill_off_half
+  green.extend(arr)
+  green.extend(fill_on_half)
+  blue = fill_off_half
+  blue.extend(fill_off_half)
+  blue.extend(arr)
 
   if reverse:
     red = red[::-1]
@@ -55,12 +63,15 @@ def sunrise(strip, reverse=False):
 
 
   for i in range(iterations):
-    color = Color(red[i], green[i], blue[i])
-    for j in range(num_pixels):
+    color = Color(green[i], red[i], blue[i])
+    print(red[i])
+    print(green[i])
+    print(blue[i])
+    for j in range(strip.numPixels()):
       strip.setPixelColor(j, color)
-    
-    time.sleep(wait_ms)
     strip.show()
+    print(wait_sec)
+    time.sleep(wait_sec)
       
 
 
