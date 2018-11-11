@@ -34,7 +34,7 @@ def sultry_dancing(strip):
   blue = 100
   transition(strip, red, green, blue)
 
-def sunrise(strip, reverse=False):
+def sun_transiton(strip, reverse=False):
   """ Red comes in during first third
       Green comes in during 2nd third
       Blue comes in during final third """
@@ -72,11 +72,12 @@ def sunrise(strip, reverse=False):
     strip.show()
     print(wait_sec)
     time.sleep(wait_sec)
-      
 
+def sunrise(strip):
+  sun_transiton(strip, False)
 
 def sunset(strip):
-  pass
+  sun_transiton(strip, True)
 
 def transition(strip, red, green, blue):
   num_pixels = strip.numPixels()
