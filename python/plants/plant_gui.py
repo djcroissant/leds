@@ -4,8 +4,14 @@ from tkinter import ttk
 
 #from neopixel import *
 #from init_strip import *
-# import timer_threading
+#from timer_threading import *
 #from led_functions import *
+
+from threading import Timer, Thread, Event
+
+import time
+from datetime import datetime
+
 
 root = Tk()
  
@@ -15,52 +21,134 @@ root.geometry('550x600')
 
 
 #### TIMER SECTION ####
-trow=0          # 0 to 
-tcol=0          # 0 to 6
-timer_frame = Frame(root, bd=2, relief="groove", padx=20, pady=20)
+class TimerGroup:
+  def __init__(self, frame, ref=[0,0], title=""):
+    row = ref[0]
+    col = ref[1]
+    
+    # title
+    lbl = Label(frame, text=title)
+    lbl.grid(row=row+0, column=col+0, columnspan=3)
+
+    # input labels
+    Label(frame, text="recurring").grid(row=row+1, column=col+0)
+    Label(frame, text="hour").grid(row=row+1, column=col+1)
+    Label(frame, text="minute").grid(row=row+1, column=col+2)
+
+    # recurring
+    self.recur = IntVar()
+    c = Checkbutton(frame, text="", variable=self.recur)
+    c.grid(row=row+2, column=col+0)
+
+    # time input
+    self.hour = Spinbox(frame, from_=0, to=23, width=5)
+    self.hour.grid(row=row+2, column=col+1)
+
+    self.min = Spinbox(frame, from_=0, to=59, width=5)
+    self.min.grid(row=row+2, column=col+2)
+
+    # start button properties
+    self.start_button = Button(frame, text="Start", command=self.start_button_click)
+    self.start_button.grid(row=row+3, column=col+0)
+
+    # cancel button properties
+    self.cancel_button = Button(frame, text="Cancel", command=self.cancel_button_click)
+    self.cancel_button.grid(row=row+3, column=col+1)
+
+    # status properties
+    self.status = Label(frame, text="Timer OFF", font=("Arial Bold", 24))
+    self.status.grid(row=row+4, column=col+0, columnspan=3)
+
+  # start button handler
+  def start_button_click(self):
+    hour = int(self.hour.get())
+    minute = int(self.min.get())
+    self.status.configure(text="Timer set for %d:%d" % (hour, minute))
+    self.stopFlag = Event()
+    self.event_thread = self.TimerThread(self.stopFlag, hour, minute)
+    self.event_thread.start()
+
+  # cancel button handler
+  def cancel_button_click(self):
+    self.status.configure(text="Timer OFF")
+    self.stopFlag.set()
+
+  class TimerThread(Thread):
+    def __init__(self, event, hour, minute):
+      Thread.__init__(self)
+      self.stopped = event
+      self.delay = self.get_delta_seconds(hour, minute)
+      print (self.delay)
+
+    def run(self):
+      while not self.stopped.wait(self.delay):
+        print("well hello!")
+        # call a function
+
+    def get_delta_seconds(self, hour, minute):
+      now = datetime.now()
+      future_time = now.replace(hour=hour, minute = minute)
+      delta_t = future_time - now
+      return delta_t.seconds + 1
+
+timer_frame=Frame(root)
 timer_frame.pack()
+turn_on_frame = Frame(timer_frame, bd=2, relief="groove", padx=20, pady=20)
+turn_on_frame.pack(side=LEFT)
+turn_on_timer = TimerGroup(turn_on_frame, [0,0], "set a time to turn on")
 
-## TURN ON ##
-# turn on start button handler
-def turn_on_start_click():
-  turn_on_status.configure(text="Timer SET")
+turn_off_frame = Frame(timer_frame, bd=2, relief="groove", padx=20, pady=20)
+turn_off_frame.pack(side=LEFT)
+turn_off_timer = TimerGroup(turn_off_frame, [0,4], "set a time to turn on")
 
-# turn on cancel button handler
-def turn_on_cancel_click():
-  turn_on_status.configure(text="Timer OFF")
 
-# turn on timer title
-lbl = Label(timer_frame, text="Set a time to turn on")
-lbl.grid(row=trow+0, column=tcol+0, columnspan=3)
 
-# turn on input labels
-Label(timer_frame, text="recurring").grid(row=trow+1, column=tcol+0)
-Label(timer_frame, text="hour").grid(row=trow+1, column=tcol+1)
-Label(timer_frame, text="minute").grid(row=trow+1, column=tcol+2)
 
-# turn on recurring
-turn_on_recur = IntVar()
-c = Checkbutton(timer_frame, text="", variable=turn_on_recur)
-c.grid(row=trow+2, column=tcol+0)
+# trow=0          # 0 to 
+# tcol=0          # 0 to 6
 
-# turn on time input
-turn_on_hour = Spinbox(timer_frame, from_=0, to=23, width=5)
-turn_on_hour.grid(row=trow+2, column=tcol+1)
 
-turn_on_min = Spinbox(timer_frame, from_=0, to=59, width=5)
-turn_on_min.grid(row=trow+2, column=tcol+2)
+# ## TURN ON ##
+# # turn on start button handler
+# def turn_on_start_click():
+#   turn_on_status.configure(text="Timer SET")
 
-# turn on start button properties
-turn_on_start_button = Button(timer_frame, text="Start", command=turn_on_start_click)
-turn_on_start_button.grid(row=trow+3, column=tcol+0)
+# # turn on cancel button handler
+# def turn_on_cancel_click():
+#   turn_on_status.configure(text="Timer OFF")
 
-# turn on cancel button properties
-turn_on_cancel_button = Button(timer_frame, text="Cancel", command=turn_on_cancel_click)
-turn_on_cancel_button.grid(row=trow+3, column=tcol+1)
+# # turn on timer title
+# lbl = Label(timer_frame, text="Set a time to turn on")
+# lbl.grid(row=trow+0, column=tcol+0, columnspan=3)
 
-# turn on timer status properties
-turn_on_status = Label(timer_frame, text="Timer OFF", font=("Arial Bold", 30))
-turn_on_status.grid(row=trow+4, column=tcol+0, columnspan=3)
+# # turn on input labels
+# Label(timer_frame, text="recurring").grid(row=trow+1, column=tcol+0)
+# Label(timer_frame, text="hour").grid(row=trow+1, column=tcol+1)
+# Label(timer_frame, text="minute").grid(row=trow+1, column=tcol+2)
+
+# # turn on recurring
+# turn_on_recur = IntVar()
+# c = Checkbutton(timer_frame, text="", variable=turn_on_recur)
+# c.grid(row=trow+2, column=tcol+0)
+
+# # turn on time input
+# turn_on_hour = Spinbox(timer_frame, from_=0, to=23, width=5)
+# turn_on_hour.grid(row=trow+2, column=tcol+1)
+
+# turn_on_min = Spinbox(timer_frame, from_=0, to=59, width=5)
+# turn_on_min.grid(row=trow+2, column=tcol+2)
+
+# # turn on start button properties
+# turn_on_start_button = Button(timer_frame, text="Start", command=turn_on_start_click)
+# turn_on_start_button.grid(row=trow+3, column=tcol+0)
+
+# # turn on cancel button properties
+# turn_on_cancel_button = Button(timer_frame, text="Cancel", command=turn_on_cancel_click)
+# turn_on_cancel_button.grid(row=trow+3, column=tcol+1)
+
+# # turn on timer status properties
+# turn_on_status = Label(timer_frame, text="Timer OFF", font=("Arial Bold", 30))
+# turn_on_status.grid(row=trow+4, column=tcol+0, columnspan=3)
 
 
 
