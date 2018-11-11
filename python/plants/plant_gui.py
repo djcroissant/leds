@@ -21,8 +21,32 @@ root.geometry('550x600')
 
 
 #### TIMER SECTION ####
-class TimerGroup:
-  def __init__(self, frame, ref=[0,0], title=""):
+class TimerThread(Thread):
+  def __init__(self, event, hour, minute, recur, led_func, strip):
+    Thread.__init__(self)
+    self.recur = recur
+    self.stopped = event
+    self.delay = self.get_delta_seconds(hour, minute)
+    self.led_func = led_func
+    self.strip = strip
+    print (self.delay)
+
+  def run(self):
+    Event().wait(self.delay)
+    self.led_func(self.strip)
+    if self.recur:
+      day_delay = 24*60*60    # 24 hrs -> seconds
+      while not self.stopped.wait(day_delay):
+            print("I'm repeating!")
+
+  def get_delta_seconds(self, hour, minute):
+    now = datetime.now()
+    future_time = now.replace(hour=hour, minute = minute)
+    delta_t = future_time - now
+    return delta_t.seconds
+
+class TimerGroup(LedControler):
+  def __init__(self, frame, ref=[0,0], title="", led_func, strip):
     row = ref[0]
     col = ref[1]
     
@@ -59,13 +83,17 @@ class TimerGroup:
     self.status = Label(frame, text="Timer OFF", font=("Arial Bold", 24))
     self.status.grid(row=row+4, column=col+0, columnspan=3)
 
+    # led function
+    self.led_func = led_func
+    self.strip = strip
+
   # start button handler
   def start_button_click(self):
     hour = int(self.hour.get())
     minute = int(self.min.get())
     self.status.configure(text="Timer set for %d:%d" % (hour, minute))
     self.stopFlag = Event()
-    self.event_thread = self.TimerThread(self.stopFlag, hour, minute)
+    self.event_thread = TimerThread(self.stopFlag, hour, minute, self.recur, self.led_func, self.strip)
     self.event_thread.start()
 
   # cancel button handler
@@ -73,84 +101,19 @@ class TimerGroup:
     self.status.configure(text="Timer OFF")
     self.stopFlag.set()
 
-  class TimerThread(Thread):
-    def __init__(self, event, hour, minute):
-      Thread.__init__(self)
-      self.stopped = event
-      self.delay = self.get_delta_seconds(hour, minute)
-      print (self.delay)
+  # inside class for timer thread
 
-    def run(self):
-      while not self.stopped.wait(self.delay):
-        print("well hello!")
-        # call a function
-
-    def get_delta_seconds(self, hour, minute):
-      now = datetime.now()
-      future_time = now.replace(hour=hour, minute = minute)
-      delta_t = future_time - now
-      return delta_t.seconds + 1
-
+# Currently passing sunrise/sunset functions to timer groups
+# Future version could allow user to pick the function associated with the timer
 timer_frame=Frame(root)
 timer_frame.pack()
 turn_on_frame = Frame(timer_frame, bd=2, relief="groove", padx=20, pady=20)
 turn_on_frame.pack(side=LEFT)
-turn_on_timer = TimerGroup(turn_on_frame, [0,0], "set a time to turn on")
+turn_on_timer = TimerGroup(turn_on_frame, [0,0], "set a time to turn on", sunrise, strip)
 
 turn_off_frame = Frame(timer_frame, bd=2, relief="groove", padx=20, pady=20)
 turn_off_frame.pack(side=LEFT)
-turn_off_timer = TimerGroup(turn_off_frame, [0,4], "set a time to turn on")
-
-
-
-
-# trow=0          # 0 to 
-# tcol=0          # 0 to 6
-
-
-# ## TURN ON ##
-# # turn on start button handler
-# def turn_on_start_click():
-#   turn_on_status.configure(text="Timer SET")
-
-# # turn on cancel button handler
-# def turn_on_cancel_click():
-#   turn_on_status.configure(text="Timer OFF")
-
-# # turn on timer title
-# lbl = Label(timer_frame, text="Set a time to turn on")
-# lbl.grid(row=trow+0, column=tcol+0, columnspan=3)
-
-# # turn on input labels
-# Label(timer_frame, text="recurring").grid(row=trow+1, column=tcol+0)
-# Label(timer_frame, text="hour").grid(row=trow+1, column=tcol+1)
-# Label(timer_frame, text="minute").grid(row=trow+1, column=tcol+2)
-
-# # turn on recurring
-# turn_on_recur = IntVar()
-# c = Checkbutton(timer_frame, text="", variable=turn_on_recur)
-# c.grid(row=trow+2, column=tcol+0)
-
-# # turn on time input
-# turn_on_hour = Spinbox(timer_frame, from_=0, to=23, width=5)
-# turn_on_hour.grid(row=trow+2, column=tcol+1)
-
-# turn_on_min = Spinbox(timer_frame, from_=0, to=59, width=5)
-# turn_on_min.grid(row=trow+2, column=tcol+2)
-
-# # turn on start button properties
-# turn_on_start_button = Button(timer_frame, text="Start", command=turn_on_start_click)
-# turn_on_start_button.grid(row=trow+3, column=tcol+0)
-
-# # turn on cancel button properties
-# turn_on_cancel_button = Button(timer_frame, text="Cancel", command=turn_on_cancel_click)
-# turn_on_cancel_button.grid(row=trow+3, column=tcol+1)
-
-# # turn on timer status properties
-# turn_on_status = Label(timer_frame, text="Timer OFF", font=("Arial Bold", 30))
-# turn_on_status.grid(row=trow+4, column=tcol+0, columnspan=3)
-
-
+turn_off_timer = TimerGroup(turn_off_frame, [0,4], "set a time to turn on", sunset, strip)
 
 
 #### SLIDER SECTION ####
