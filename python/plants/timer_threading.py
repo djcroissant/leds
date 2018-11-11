@@ -2,43 +2,26 @@ import time
 from datetime import datetime
 from threading import Timer, Thread, Event
 
-class StartThread(Thread):
-    def __init__(self, on_time):
-        Thread.__init__(self)
-        self.on_time = on_time
-        self.delay = get_delta_seconds(on_time)
-
-    def run(self):
-      print(self.delay)
-      Event().wait(self.delay)
-      print('hello')
-      # call a function
-
-
-class StopThread(Thread):
-  def __init__(self, off_time):
+class TimerThread(Thread):
+  def __init__(self, event, hour, minute, recur, led_func, strip):
     Thread.__init__(self)
-    self.off_time = off_time
-    self.delay = get_delta_seconds(off_time)
-
+    self.recur = recur
+    self.stopped = event
+    self.delay = self.get_delta_seconds(hour, minute)
+    self.led_func = led_func
+    self.strip = strip
+    print (self.delay)
 
   def run(self):
-    print('lkasdfl;')
     Event().wait(self.delay)
-    print('goodbye')
+    self.led_func(self.strip)
+    if self.recur:
+      day_delay = 24*60*60    # 24 hrs -> seconds
+      while not self.stopped.wait(day_delay):
+            print("I'm repeating!")
 
-
-def get_delta_seconds(future_timer):
-  now = datetime.now()
-  future_time = now.replace(hour=future_timer[0], minute = future_timer[1])
-  delta_t = future_time - now
-  return delta_t.seconds + 1
-
-print("Timer set!")
-on_time = (19,30)
-off_time = (19,31)
-start_thread = StartThread(on_time)
-start_thread.start()
-
-stop_thread = StopThread(off_time)
-stop_thread.start()
+  def get_delta_seconds(self, hour, minute):
+    now = datetime.now()
+    future_time = now.replace(hour=hour, minute = minute)
+    delta_t = future_time - now
+    return delta_t.seconds
