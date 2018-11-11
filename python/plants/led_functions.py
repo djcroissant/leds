@@ -65,6 +65,7 @@ def sunrise(strip, reverse=False):
 
 
 def sunset(strip):
+  pass
 
 def transition(strip, red, green, blue):
   num_pixels = strip.numPixels()

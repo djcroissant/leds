@@ -21,7 +21,7 @@ root.geometry('550x600')
 
 
 #### TIMER SECTION ####
-class TimerGroup(LedControler):
+class TimerGroup:
   def __init__(self, frame, led_func, strip, ref=[0,0], title=""):
     row = ref[0]
     col = ref[1]
