@@ -44,8 +44,8 @@ def sunrise(strip):
   """ Red comes in during first third
       Green comes in during 2nd third
       Blue comes in during final third """
-  duration = 1 #30     # event duration in minutes
-  steps = 60 #0
+  duration = 30     # event duration in minutes
+  steps = 600
   wait_sec = duration * 60 / steps  # time to wait between each increment
   target = {"red": 255, "green": 255, "blue": 255}
   state = CS.state
@@ -83,7 +83,6 @@ def sunset(strip):
   state = CS.state
   if state["red"] > 200 and state["green"] > 200 and state["blue"] > 200:
     CS.state = bright_warm(strip, CS.state)
-    slider.set_slider(CS.state)
     
 def transition(strip, state, target):
   num_pixels = strip.numPixels()
