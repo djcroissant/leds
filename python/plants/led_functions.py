@@ -67,6 +67,7 @@ def sunrise(strip):
   print("blue: ", blue) 
   for i in range(steps):
     CS.state = {"red": red[i], "green": green[i], "blue": blue[i]}
+    slider.set_slider(CS.state)
     color = Color(int(green[i]), int(red[i]), int(blue[i]))
     for j in range(strip.numPixels()):
       strip.setPixelColor(j, color)
@@ -82,6 +83,7 @@ def sunset(strip):
   state = CS.state
   if state["red"] > 200 and state["green"] > 200 and state["blue"] > 200:
     CS.state = bright_warm(strip, CS.state)
+    slider.set_slider(CS.state)
     
 def transition(strip, state, target):
   num_pixels = strip.numPixels()

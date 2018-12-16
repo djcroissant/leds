@@ -173,10 +173,12 @@ master_toggle_frame.pack()
 # master_on click handler
 def master_on_click():
   CS.state = all_on(strip, CS.state)
+  slider.set_slider(CS.state)
 
 # master_off click handler
 def master_off_click():
   CS.state = all_off(strip, CS.state)
+  slider.set_slider(CS.state)
 
 # master_on button properties
 master_on = Button(master_toggle_frame, text="Lights ON", command=master_on_click)
