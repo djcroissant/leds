@@ -22,9 +22,9 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 def all_on(strip):
   """(green, red, blue)"""
-  red = 100
-  green = 30
-  blue = 10
+  red = 200
+  green = 60
+  blue = 20
   
   # turn all off
   for i in range(strip.numPixels()):

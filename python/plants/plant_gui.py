@@ -134,7 +134,7 @@ preset_frame.pack()
 
 # preset dropdown
 preset_drop = ttk.Combobox(preset_frame)
-preset_drop['values']=("dark and moody", "sultry dancing", "awake evening")
+preset_drop['values']=("dark and moody", "sultry dancing", "awake evening", "bright warm")
 preset_drop.current(1)
 preset_drop.grid(row=row+0, column=col+0)
 
@@ -142,7 +142,7 @@ preset_drop.grid(row=row+0, column=col+0)
 def apply_preset_click():
   # check value, call function by same name
   val = preset_drop.get()
-  preset_lookup = {"dark and moody": dark_and_moody, "sultry dancing": sultry_dancing, "awake evening": awake_evening}
+  preset_lookup = {"dark and moody": dark_and_moody, "sultry dancing": sultry_dancing, "awake evening": awake_evening, "bright warm": bright_warm}
   preset_lookup[val](strip)
 
 # apply_preset button

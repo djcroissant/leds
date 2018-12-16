@@ -22,6 +22,12 @@ def awake_evening(strip):
   blue = 10
   transition(strip, red, green, blue)
 
+def bright_warm(strip):
+  red = 200
+  green = 60
+  blue = 20
+  transition(strip, red, green, blue)
+
 def dark_and_moody(strip):
   red = 70
   green = 15
@@ -44,15 +50,18 @@ def sun_transiton(strip, reverse=False):
 
   arr = list(range(255))
   fill_on_half = [255] * int((iterations - len(arr)) / 2)
-
   fill_off_half = [0] * int((iterations - len(arr)) / 2)
-  red = arr
+  red = []
+  green = []
+  blue = []
+
+  red.extend(arr)
   red.extend(fill_on_half)
-  red.extend(fill_off_half)
-  green = fill_off_half
+  red.extend(fill_on_half)
+  green.extend(fill_off_half)
   green.extend(arr)
   green.extend(fill_on_half)
-  blue = fill_off_half
+  blue.extend(fill_off_half)
   blue.extend(fill_off_half)
   blue.extend(arr)
 
@@ -60,6 +69,12 @@ def sun_transiton(strip, reverse=False):
     red = red[::-1]
     green = green[::-1]
     blue = blue[::-1]
+    print("red")
+    print(red)
+    print("green")
+    print(green)
+    print("blue")
+    print(blue)
 
 
   for i in range(iterations):
