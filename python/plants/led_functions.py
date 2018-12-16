@@ -62,7 +62,7 @@ def sunrise(strip):
   
   for i in range(steps):
     CS.state = {"red": red[i], "green": green[i], "blue": blue[i]}
-    color = Color(green[i], red[i], blue[i])
+    color = Color(int(green[i]), int(red[i]), int(blue[i]))
     for j in range(strip.numPixels()):
       strip.setPixelColor(j, color)
     strip.show()
@@ -87,7 +87,7 @@ def transition(strip, state, target):
 
   for step in range(steps):
     for i in range(num_pixels):
-      color = Color(green_tran[step], red_tran[step], blue_tran[step])
+      color = Color(int(green_tran[step]), int(red_tran[step]), int(blue_tran[step]))
       strip.setPixelColor(i, color)
     strip.show()
 
