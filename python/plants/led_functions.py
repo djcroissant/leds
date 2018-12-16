@@ -8,38 +8,33 @@ def all_off(strip, state):
   transition(strip, state, target)
   return target
 
-def all_on(strip):
-  red = 255
-  green = 255
-  blue = 255
-  transition(strip, red, green, blue)
+def all_on(strip, state):
+  target = {"red": 255, "green": 255, "blue": 255} 
+  transition(strip, state, target)
+  return target
 
-def custom_on(strip, red, green, blue):
-  transition(strip, red, green, blue)
+def custom_on(strip, state, target):
+  transition(strip, state, target)
 
-def awake_evening(strip):
-  red = 100
-  green = 30
-  blue = 10
-  transition(strip, red, green, blue)
+def awake_evening(strip, state):
+  target = {"red": 100, "green": 30, "blue": 10} 
+  transition(strip, state, target)
+  return target
 
-def bright_warm(strip):
-  red = 200
-  green = 60
-  blue = 20
-  transition(strip, red, green, blue)
+def bright_warm(strip, state):
+  target = {"red": 200, "green": 60, "blue": 20} 
+  transition(strip, state, target)
+  return target
 
-def dark_and_moody(strip):
-  red = 70
-  green = 15
-  blue = 0
-  transition(strip, red, green, blue)
+def dark_and_moody(strip, state):
+  target = {"red": 70, "green": 15, "blue": 0} 
+  transition(strip, state, target)
+  return target
 
-def sultry_dancing(strip):
-  red = 120
-  green = 15
-  blue = 100
-  transition(strip, red, green, blue)
+def sultry_dancing(strip, state):
+  target = {"red": 120, "green": 15, "blue": 100} 
+  transition(strip, state, target)
+  return target
 
 def sun_transiton(strip, reverse=False):
   """ Red comes in during first third
