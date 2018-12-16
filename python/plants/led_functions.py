@@ -2,6 +2,8 @@ from neopixel import *
 import time
 import numpy as np
 
+from common import CS
+
 
 def all_off(strip, state):
   target = {"red": 0, "green": 0, "blue": 0} 

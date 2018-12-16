@@ -6,15 +6,13 @@ from neopixel import *
 from init_strip import *
 from timer_threading import *
 from led_functions import *
+from common import CS
 
 from threading import Timer, Thread, Event
 
 import time
 from datetime import datetime
 
-# class to hold color values (Color State)
-class CS:
-  state = {"red": 0, "green": 0, "blue": 0}
 
 root = Tk()
  
