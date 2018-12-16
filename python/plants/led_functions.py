@@ -3,6 +3,7 @@ import time
 import numpy as np
 
 from common import CS
+from gui_components import TimerGroup, SliderGroup
 
 
 def all_off(strip, state):

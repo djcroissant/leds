@@ -4,9 +4,10 @@ from ttk import *
 
 from neopixel import *
 from init_strip import *
-from timer_threading import *
+from timer_threading import TimerThread
 from led_functions import *
 from common import CS
+from gui_components import TimerGroup, SliderGroup
 
 from threading import Timer, Thread, Event
 
