@@ -68,7 +68,6 @@ def sunrise(strip):
   print("blue: ", blue) 
   for i in range(steps):
     CS.state = {"red": red[i], "green": green[i], "blue": blue[i]}
-    slider.set_slider(CS.state)
     color = Color(int(green[i]), int(red[i]), int(blue[i]))
     for j in range(strip.numPixels()):
       strip.setPixelColor(j, color)
