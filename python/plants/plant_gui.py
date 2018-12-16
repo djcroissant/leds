@@ -117,14 +117,14 @@ class SliderGroup:
     self.apply_slider = Button(slider_frame, text="Apply Slider", command=self.apply_slider_click)
     self.apply_slider.grid(row=srow+1, column=scol+3, columnspan=2)
 
-    # apply_slider handler
-    def apply_slider_click(self):
-      target = {
-        "red": self.red_slider.get(),
-        "green": self.green_slider.get(),
-        "blue": self.blue_slider.get()
-      }
-      CS.state = custom_on(strip, CS.state, target)
+  # apply_slider handler
+  def apply_slider_click(self):
+    target = {
+      "red": self.red_slider.get(),
+      "green": self.green_slider.get(),
+      "blue": self.blue_slider.get()    
+    }
+    CS.state = custom_on(strip, CS.state, target)
 
 
 srow=0          # 0 to 2
