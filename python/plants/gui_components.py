@@ -4,6 +4,8 @@ from ttk import *
 from common import CS
 from timer_threading import TimerThread
 
+from threading import Timer, Thread, Event
+
 
 class TimerGroup:
   def __init__(self, frame, led_func, strip, ref=[0,0], title=""):
