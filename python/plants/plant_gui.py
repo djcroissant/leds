@@ -12,6 +12,9 @@ from threading import Timer, Thread, Event
 import time
 from datetime import datetime
 
+# class to hold color values (Color State)
+class CS:
+  values = {"red": 0, "green": 0, "blue": 0}
 
 root = Tk()
  
@@ -77,7 +80,6 @@ class TimerGroup:
     self.status.configure(text="Timer OFF")
     self.stopFlag.set()
 
-  # inside class for timer thread
 
 # Currently passing sunrise/sunset functions to timer groups
 # Future version could allow user to pick the function associated with the timer
@@ -99,26 +101,30 @@ slider_frame = Frame(root, bd=2, relief="groove", padx=20, pady=20)
 slider_frame.pack()
 
 # red slider
-red = Scale(slider_frame, from_=0, to=255, orient="horizontal")
-red.grid(row=srow+0, column=scol+1, columnspan=2)
+red_slider = Scale(slider_frame, from_=0, to=255, orient="horizontal")
+red_slider.grid(row=srow+0, column=scol+1, columnspan=2)
 lbl = Label(slider_frame, text="Red")
 lbl.grid(row=srow+0, column=scol+0)
 
 # green slider
-green = Scale(slider_frame, from_=0, to=255, orient="horizontal")
-green.grid(row=srow+1, column=scol+1, columnspan=2)
+green_slider = Scale(slider_frame, from_=0, to=255, orient="horizontal")
+green_slider.grid(row=srow+1, column=scol+1, columnspan=2)
 lbl = Label(slider_frame, text="Green")
 lbl.grid(row=srow+1, column=scol+0)
 
 # blue slider
-blue = Scale(slider_frame, from_=0, to=255, orient="horizontal")
-blue.grid(row=srow+2, column=scol+1, columnspan=2)
+blue_slider = Scale(slider_frame, from_=0, to=255, orient="horizontal")
+blue_slider.grid(row=srow+2, column=scol+1, columnspan=2)
 lbl = Label(slider_frame, text="Blue")
 lbl.grid(row=srow+2, column=scol+0)
 
 # apply_slider handler
 def apply_slider_click():
-  custom_on(strip, red.get(), green.get(), blue.get())
+  CS.red = red_slider.get()
+  CS.green = green_slider.get()
+  CS.blue = blue_slider.get()
+
+  custom_on(strip, CS.red, CS.green, CS.blue)
 
 # apply_slider properties
 apply_slider = Button(slider_frame, text="Apply Slider", command=apply_slider_click)
@@ -161,7 +167,7 @@ def master_on_click():
 
 # master_off click handler
 def master_off_click():
-  all_off(strip)
+  CS.values = all_off(strip)
 
 # master_on button properties
 master_on = Button(master_toggle_frame, text="Lights ON", command=master_on_click)
