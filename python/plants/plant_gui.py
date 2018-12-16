@@ -14,7 +14,7 @@ from datetime import datetime
 
 # class to hold color values (Color State)
 class CS:
-  values = {"red": 0, "green": 0, "blue": 0}
+  state = {"red": 0, "green": 0, "blue": 0}
 
 root = Tk()
  
@@ -120,11 +120,13 @@ lbl.grid(row=srow+2, column=scol+0)
 
 # apply_slider handler
 def apply_slider_click():
-  CS.red = red_slider.get()
-  CS.green = green_slider.get()
-  CS.blue = blue_slider.get()
+  target = {
+    "red": red_slider.get(),
+    "green": green_slider.get(),
+    "blue": blue_slider.get()
+  }
+  CS.state = custom_on(strip, CS.state, target)
 
-  custom_on(strip, CS.red, CS.green, CS.blue)
 
 # apply_slider properties
 apply_slider = Button(slider_frame, text="Apply Slider", command=apply_slider_click)
@@ -149,7 +151,7 @@ def apply_preset_click():
   # check value, call function by same name
   val = preset_drop.get()
   preset_lookup = {"dark and moody": dark_and_moody, "sultry dancing": sultry_dancing, "awake evening": awake_evening, "bright warm": bright_warm}
-  preset_lookup[val](strip)
+  CS.state = preset_lookup[val](strip)
 
 # apply_preset button
 apply_preset = Button(preset_frame, text="Apply Preset", command=apply_preset_click)
@@ -163,11 +165,11 @@ master_toggle_frame.pack()
 
 # master_on click handler
 def master_on_click():
-  all_on(strip)
+  CS.state = all_on(strip)
 
 # master_off click handler
 def master_off_click():
-  CS.values = all_off(strip)
+  CS.state = all_off(strip)
 
 # master_on button properties
 master_on = Button(master_toggle_frame, text="Lights ON", command=master_on_click)

@@ -15,6 +15,7 @@ def all_on(strip, state):
 
 def custom_on(strip, state, target):
   transition(strip, state, target)
+  return target
 
 def awake_evening(strip, state):
   target = {"red": 100, "green": 30, "blue": 10} 
@@ -36,13 +37,15 @@ def sultry_dancing(strip, state):
   transition(strip, state, target)
   return target
 
-def sunrise(strip, state, target):
+def sunrise(strip):
   """ Red comes in during first third
       Green comes in during 2nd third
       Blue comes in during final third """
   duration = 30     # event duration in minutes
   steps = 600
   wait_sec = duration * 60 / steps  # time to wait between each increment
+  target = {"red": 255, "green": 255, "blue": 255}
+  state = CS.state
 
   red_tran = np.linspace(state["red"], target["red"], int(steps/3))
   red_target = target["red"] * int(steps * 2 / 3)
@@ -58,6 +61,7 @@ def sunrise(strip, state, target):
   blue = blue_state + blue_tran
   
   for i in range(steps):
+    CS.state = {"red": red[i], "green": green[i], "blue": blue[i]}
     color = Color(green[i], red[i], blue[i])
     for j in range(strip.numPixels()):
       strip.setPixelColor(j, color)
@@ -65,13 +69,14 @@ def sunrise(strip, state, target):
     print("sun_transition")
     time.sleep(wait_sec)
 
-def sunset(strip, state, target):
+def sunset(strip):
   """
   If lights are all fully on, then fade down to bright_warm setting
   If lights aren't fully on, do nothing
   """
+  state = CS.state
   if state["red"] > 200 and state["green"] > 200 and state["blue"] > 200:
-    return bright_warm(strip, state)
+    CS.state = bright_warm(strip, CS.state)
     
 def transition(strip, state, target):
   num_pixels = strip.numPixels()
