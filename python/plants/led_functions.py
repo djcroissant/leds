@@ -36,60 +36,43 @@ def sultry_dancing(strip, state):
   transition(strip, state, target)
   return target
 
-def sun_transiton(strip, reverse=False):
+def sunrise(strip, state, target):
   """ Red comes in during first third
       Green comes in during 2nd third
       Blue comes in during final third """
   duration = 30     # event duration in minutes
-  iterations = int(255 * 5 / 3)    # required to bring color in phases
-  wait_sec = duration * 60 / iterations  # time to wait between each increment
+  steps = 600
+  wait_sec = duration * 60 / steps  # time to wait between each increment
 
-  arr = list(range(255))
-  fill_on_half = [255] * int((iterations - len(arr)) / 2)
-  fill_off_half = [0] * int((iterations - len(arr)) / 2)
-  red = []
-  green = []
-  blue = []
+  red_tran = np.linspace(state["red"], target["red"], int(steps/3))
+  red_target = target["red"] * int(steps * 2 / 3)
+  red = red_tran + red_target
 
-  red.extend(arr)
-  red.extend(fill_on_half)
-  red.extend(fill_on_half)
-  green.extend(fill_off_half)
-  green.extend(arr)
-  green.extend(fill_on_half)
-  blue.extend(fill_off_half)
-  blue.extend(fill_off_half)
-  blue.extend(arr)
+  green_state = state["green"] * int(steps / 3)
+  green_tran = np.linspace(state["green"], target["blue"], int(steps/3))
+  green_target = target["green"] * int(steps / 3)
+  green = green_state + green_tran + green_target
 
-  if reverse:
-    red = red[::-1]
-    green = green[::-1]
-    blue = blue[::-1]
-    print("red")
-    print(red)
-    print("green")
-    print(green)
-    print("blue")
-    print(blue)
-
-
-  for i in range(iterations):
+  blue_state = state["blue"] * int(steps * 2 / 3)
+  blue_tran = np.linspace(state["blue"], target["blue"], int(steps/3))
+  blue = blue_state + blue_tran
+  
+  for i in range(steps):
     color = Color(green[i], red[i], blue[i])
-    print(red[i])
-    print(green[i])
-    print(blue[i])
     for j in range(strip.numPixels()):
       strip.setPixelColor(j, color)
     strip.show()
-    print(wait_sec)
+    print("sun_transition")
     time.sleep(wait_sec)
 
-def sunrise(strip):
-  sun_transiton(strip, False)
-
-def sunset(strip):
-  sun_transiton(strip, True)
-
+def sunset(strip, state, target):
+  """
+  If lights are all fully on, then fade down to bright_warm setting
+  If lights aren't fully on, do nothing
+  """
+  if state["red"] > 200 and state["green"] > 200 and state["blue"] > 200:
+    return bright_warm(strip, state)
+    
 def transition(strip, state, target):
   num_pixels = strip.numPixels()
   steps = 50
