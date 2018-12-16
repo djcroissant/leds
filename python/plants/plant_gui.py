@@ -126,6 +126,11 @@ class SliderGroup:
     }
     CS.state = custom_on(strip, CS.state, target)
 
+  def set_slider(self, target):
+    self.red_slider.set(target["red"])
+    self.green_slider.set(target["green"])
+    self.blue_slider.set(target["blue"])
+
 
 srow=0          # 0 to 2
 scol=0          # 0 to 0
@@ -153,6 +158,7 @@ def apply_preset_click():
   val = preset_drop.get()
   preset_lookup = {"dark and moody": dark_and_moody, "sultry dancing": sultry_dancing, "awake evening": awake_evening, "bright warm": bright_warm}
   CS.state = preset_lookup[val](strip, CS.state)
+  slider.set_slider(CS.state)
 
 # apply_preset button
 apply_preset = Button(preset_frame, text="Apply Preset", command=apply_preset_click)
