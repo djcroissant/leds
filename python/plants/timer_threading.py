@@ -16,7 +16,7 @@ class TimerThread(Thread):
     Event().wait(self.delay)
     self.led_func(self.strip)
     if self.recur:
-      day_delay = 24*60*60    # 24 hrs -> seconds
+      day_delay = ((24*60)-30)*60    # 24 hrs minus 30 min -> seconds
       while not self.stopped.wait(day_delay):
             self.led_func(self.strip)
 

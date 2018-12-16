@@ -22,6 +22,12 @@ def awake_evening(strip):
   blue = 10
   transition(strip, red, green, blue)
 
+def bright_warm(strip):
+  red = 200
+  green = 60
+  blue = 20
+  transition(strip, red, green, blue)
+
 def dark_and_moody(strip):
   red = 70
   green = 15
@@ -38,6 +44,7 @@ def sun_transiton(strip, reverse=False):
   """ Red comes in during first third
       Green comes in during 2nd third
       Blue comes in during final third """
+<<<<<<< HEAD
 duration = 30     # event duration in minutes
 iterations = int(255 * 5 / 3)    # required to bring color in phases
 wait_sec = duration * 60 / iterations  # time to wait between each increment
@@ -55,11 +62,39 @@ green.extend(fill_on_half)
 blue = fill_off_half
 blue.extend(fill_off_half)
 blue.extend(arr)
+=======
+  duration = 30     # event duration in minutes
+  iterations = int(255 * 5 / 3)    # required to bring color in phases
+  wait_sec = duration * 60 / iterations  # time to wait between each increment
+
+  arr = list(range(255))
+  fill_on_half = [255] * int((iterations - len(arr)) / 2)
+  fill_off_half = [0] * int((iterations - len(arr)) / 2)
+  red = []
+  green = []
+  blue = []
+
+  red.extend(arr)
+  red.extend(fill_on_half)
+  red.extend(fill_on_half)
+  green.extend(fill_off_half)
+  green.extend(arr)
+  green.extend(fill_on_half)
+  blue.extend(fill_off_half)
+  blue.extend(fill_off_half)
+  blue.extend(arr)
+>>>>>>> 2bd11aa92c939c5bf9d34e90196c9f1a8974d63a
 
   if reverse:
     red = red[::-1]
     green = green[::-1]
     blue = blue[::-1]
+    print("red")
+    print(red)
+    print("green")
+    print(green)
+    print("blue")
+    print(blue)
 
 
   for i in range(iterations):
