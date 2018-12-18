@@ -13,13 +13,13 @@ class TimerThread(Thread):
     print (self.delay)
 
   def run(self):
-    while not self.stopped.wait(self.delay):
-      self.led_func(self.pixel)
-      self.stopped.set()
-    if self.recur:
-      day_delay = ((24*60)-30)*60    # 24 hrs minus 30 min -> seconds
-      while not self.stopped.wait(day_delay):
-        self.led_func(self.pixel)
+    # while not self.stopped.wait(self.delay):
+    #   self.led_func(self.pixel)
+    #   self.stopped.set()
+    # if self.recur:
+    #   day_delay = ((24*60)-30)*60    # 24 hrs minus 30 min -> seconds
+    #   while not self.stopped.wait(day_delay):
+    #     self.led_func(self.pixel)
 
   def get_delta_seconds(self, hour, minute):
     now = datetime.now()
