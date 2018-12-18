@@ -13,6 +13,7 @@ class TimerThread(Thread):
     print (self.delay)
 
   def run(self):
+    print('hi there')
     # while not self.stopped.wait(self.delay):
     #   self.led_func(self.pixel)
     #   self.stopped.set()
