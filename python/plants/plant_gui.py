@@ -3,10 +3,9 @@ from Tkinter import *
 from ttk import *
 
 from neopixel import *
-from init_strip import *
 from timer_threading import TimerThread
-from led_functions import *
-from common import CS
+from led_functions import LedFunctions
+from common import Pix
 from gui_components import TimerGroup, SliderGroup
 
 from threading import Timer, Thread, Event
@@ -16,6 +15,7 @@ from datetime import datetime
 
 
 root = Tk()
+sunshine = Pix()
  
 # root properties
 root.title("Daya Electric Forest Control Panel")
@@ -29,11 +29,11 @@ timer_frame=Frame(root)
 timer_frame.pack()
 turn_on_frame = Frame(timer_frame, relief="groove")
 turn_on_frame.pack(side=LEFT)
-turn_on_timer = TimerGroup(turn_on_frame, sunrise, strip, [0,0], "set a time to turn on")
+turn_on_timer = TimerGroup(turn_on_frame, LedFunctions.sunrise, Pix.strip, [0,0], "set a time to turn on")
 
 turn_off_frame = Frame(timer_frame,  relief="groove")
 turn_off_frame.pack(side=LEFT)
-turn_off_timer = TimerGroup(turn_off_frame, sunset, strip, [0,4], "set a time to turn on")
+turn_off_timer = TimerGroup(turn_off_frame, LedFunctions.sunset, Pix.strip, [0,4], "set a time to turn on")
 
 
 #### SLIDER SECTION ####
@@ -61,9 +61,14 @@ preset_drop.grid(row=row+0, column=col+0)
 def apply_preset_click():
   # check value, call function by same name
   val = preset_drop.get()
-  preset_lookup = {"dark and moody": dark_and_moody, "sultry dancing": sultry_dancing, "awake evening": awake_evening, "bright warm": bright_warm}
-  CS.state = preset_lookup[val](strip, CS.state)
-  slider.set_slider(CS.state)
+  preset_lookup = {
+    "dark and moody": LedFunctions.dark_and_moody, 
+    "sultry dancing": LedFunctions.sultry_dancing, 
+    "awake evening": LedFunctions.awake_evening, 
+    "bright warm": LedFunctions.bright_warm
+  }
+  Pix.state = preset_lookup[val](Pix.strip, Pix.state)
+  slider.set_slider(Pix.state)
 
 # apply_preset button
 apply_preset = Button(preset_frame, text="Apply Preset", command=apply_preset_click)
@@ -77,13 +82,13 @@ master_toggle_frame.pack()
 
 # master_on click handler
 def master_on_click():
-  CS.state = all_on(strip, CS.state)
-  slider.set_slider(CS.state)
+  Pix.state = LedFunctions.all_on(Pix.strip, Pix.state)
+  slider.set_slider(Pix.state)
 
 # master_off click handler
 def master_off_click():
-  CS.state = all_off(strip, CS.state)
-  slider.set_slider(CS.state)
+  Pix.state = LedFunctions.all_off(Pix.strip, Pix.state)
+  slider.set_slider(Pix.state)
 
 # master_on button properties
 master_on = Button(master_toggle_frame, text="Lights ON", command=master_on_click)
