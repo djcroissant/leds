@@ -87,7 +87,7 @@ def master_on_click():
 
 # master_off click handler
 def master_off_click():
-  sunshine.state = LedFunctions().all_off(sunshine.strip, sunshine.state)
+  sunshine.state = LedFunctions().all_off(sunshine)
   slider.set_slider(sunshine.state)
 
 # master_on button properties
