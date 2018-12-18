@@ -72,7 +72,7 @@ class LedFunctions:
     """
     state = pixel.state
     if state["red"] > 200 and state["green"] > 200 and state["blue"] > 200:
-      pixel.state = self.bright_warm(pixel)
+      self.bright_warm(pixel)
       
   def transition(self, pixel, target):
     num_pixels = pixel.strip.numPixels()
@@ -80,9 +80,6 @@ class LedFunctions:
     red_tran = np.linspace(pixel.state["red"], target["red"], steps)
     green_tran = np.linspace(pixel.state["green"], target["green"], steps)
     blue_tran = np.linspace(pixel.state["blue"], target["blue"], steps)
-    print("red: ", red_tran)
-    print("green: ", green_tran)
-    print("blue: ", blue_tran)
     pixel.state = target
 
     for step in range(steps):
@@ -90,6 +87,5 @@ class LedFunctions:
         color = Color(int(green_tran[step]), int(red_tran[step]), int(blue_tran[step]))
         pixel.strip.setPixelColor(i, color)
       pixel.strip.show()
-      print("state: ", pixel.state)
 
   
