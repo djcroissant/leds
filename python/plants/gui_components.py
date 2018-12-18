@@ -1,9 +1,9 @@
 from Tkinter import *
 from ttk import *
 
-from common import CS
+from common import Pix
 from timer_threading import TimerThread
-from led_functions import *
+from led_functions import LedFunctions
 
 from threading import Timer, Thread, Event
 
@@ -96,7 +96,7 @@ class SliderGroup:
       "green": self.green_slider.get(),
       "blue": self.blue_slider.get()    
     }
-    CS.state = custom_on(strip, CS.state, target)
+    Pix.state = LedFunctions.custom_on(Pix.strip, Pix.state, target)
 
   def set_slider(self, target):
     self.red_slider.set(target["red"])

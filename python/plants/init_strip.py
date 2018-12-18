@@ -1,5 +1,5 @@
 import time
-from neopixel import *
+from neopixel import Adafruit_NeoPixel
 import argparse
 
 # LED strip configuration:
