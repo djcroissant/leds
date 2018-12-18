@@ -6,10 +6,9 @@ from common import Pix
 
 
 class LedFunctions:
-  def all_off(self, strip, state):
+  def all_off(self, pixel):
     target = {"red": 0, "green": 0, "blue": 0} 
-    self.transition(strip, state, target)
-    return target
+    self.transition(pixel, target)
 
   def all_on(self, strip, state):
     target = {"red": 255, "green": 255, "blue": 255} 
@@ -84,8 +83,8 @@ class LedFunctions:
     if state["red"] > 200 and state["green"] > 200 and state["blue"] > 200:
       sunshine.state = self.bright_warm(strip, sunshine.state)
       
-  def transition(self, strip, state, target):
-    num_pixels = strip.numPixels()
+  def transition(self, pixel, target):
+    num_pixels = pixel.strip.numPixels()
     steps = 50
     red_tran = np.linspace(state["red"], target["red"], steps)
     green_tran = np.linspace(state["green"], target["green"], steps)
@@ -94,7 +93,7 @@ class LedFunctions:
     for step in range(steps):
       for i in range(num_pixels):
         color = Color(int(green_tran[step]), int(red_tran[step]), int(blue_tran[step]))
-        strip.setPixelColor(i, color)
-      strip.show()
+        pixel.strip.setPixelColor(i, color)
+      pixel.strip.show()
 
   
