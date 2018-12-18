@@ -56,9 +56,6 @@ class LedFunctions:
     blue_tran = list(np.linspace(state["blue"], target["blue"], int(steps/3)))
     blue = blue_state + blue_tran
     
-    print("red: ", red)
-    print("green: ", green)
-    print("blue: ", blue) 
     for i in range(steps):
       pixel.state = {"red": red[i], "green": green[i], "blue": blue[i]}
       color = Color(int(green[i]), int(red[i]), int(blue[i]))
