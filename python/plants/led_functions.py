@@ -80,6 +80,9 @@ class LedFunctions:
     red_tran = np.linspace(pixel.state["red"], target["red"], steps)
     green_tran = np.linspace(pixel.state["green"], target["green"], steps)
     blue_tran = np.linspace(pixel.state["blue"], target["blue"], steps)
+    print("red: ", red_tran)
+    print("green: ", green_tran)
+    print("blue: ", blue_tran)
     pixel.state = target
 
     for step in range(steps):
