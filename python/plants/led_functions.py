@@ -62,7 +62,7 @@ class LedFunctions:
     for i in range(steps):
       pixel.state = {"red": red[i], "green": green[i], "blue": blue[i]}
       color = Color(int(green[i]), int(red[i]), int(blue[i]))
-      for j in range(strip.numPixels()):
+      for j in range(pixel.strip.numPixels()):
         pixel.strip.setPixelColor(j, color)
       pixel.strip.show()
       print("sunrise step %s of %s" % (i+1, steps))
