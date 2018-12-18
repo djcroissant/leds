@@ -78,12 +78,12 @@ class LedFunctions:
       pixel.state = self.bright_warm(pixel)
       
   def transition(self, pixel, target):
-    pixel.state = target
     num_pixels = pixel.strip.numPixels()
     steps = 50
     red_tran = np.linspace(pixel.state["red"], target["red"], steps)
     green_tran = np.linspace(pixel.state["green"], target["green"], steps)
     blue_tran = np.linspace(pixel.state["blue"], target["blue"], steps)
+    pixel.state = target
 
     for step in range(steps):
       for i in range(num_pixels):

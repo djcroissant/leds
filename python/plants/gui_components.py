@@ -9,7 +9,7 @@ from threading import Timer, Thread, Event
 
 
 class TimerGroup:
-  def __init__(self, frame, led_func, strip, ref=[0,0], title=""):
+  def __init__(self, frame, led_func, pixel, ref=[0,0], title=""):
     row = ref[0]
     col = ref[1]
     
@@ -48,6 +48,7 @@ class TimerGroup:
 
     # led function
     self.led_func = led_func
+    self.pixel = pixel
 
   # start button handler
   def start_button_click(self):
@@ -55,7 +56,7 @@ class TimerGroup:
     minute = int(self.min.get())
     self.status.configure(text="Timer set for %d:%d" % (hour, minute))
     self.stopFlag = Event()
-    self.event_thread = TimerThread(self.stopFlag, hour, minute, self.recur, self.led_func, sunshine)
+    self.event_thread = TimerThread(self.stopFlag, hour, minute, self.recur, self.led_func, self.pixel)
     self.event_thread.start()
 
   # cancel button handler
