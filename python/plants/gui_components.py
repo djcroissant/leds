@@ -3,6 +3,7 @@ from ttk import *
 
 from common import CS
 from timer_threading import TimerThread
+from led_functions import *
 
 from threading import Timer, Thread, Event
 
