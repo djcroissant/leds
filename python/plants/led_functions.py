@@ -90,5 +90,6 @@ class LedFunctions:
         color = Color(int(green_tran[step]), int(red_tran[step]), int(blue_tran[step]))
         pixel.strip.setPixelColor(i, color)
       pixel.strip.show()
+      print("state: ", pixel.state)
 
   
