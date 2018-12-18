@@ -42,7 +42,7 @@ scol=0          # 0 to 0
 slider_frame = Frame(root, relief="groove")
 slider_frame.pack()
 
-slider = SliderGroup(slider_frame, srow, scol)
+slider = SliderGroup(slider_frame, srow, scol, sunshine)
 
 
 #### PRESET SECTION ####

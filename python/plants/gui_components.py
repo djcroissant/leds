@@ -66,7 +66,9 @@ class TimerGroup:
 
 
 class SliderGroup:
-  def __init__(self, slider_frame, srow, scol):
+  def __init__(self, slider_frame, srow, scol, light_strip):
+    self.light_strip = light_strip
+
     # red slider
     self.red_slider = Scale(slider_frame, from_=0, to=255, orient="horizontal")
     self.red_slider.grid(row=srow+0, column=scol+1, columnspan=2)
@@ -96,7 +98,7 @@ class SliderGroup:
       "green": self.green_slider.get(),
       "blue": self.blue_slider.get()    
     }
-    sunshine.state = LedFunctions().custom_on(sunshine.strip, sunshine.state, target)
+    self.light_strip.state = LedFunctions().custom_on(self.light_strip.strip, self.light_strip.state, target)
 
   def set_slider(self, target):
     self.red_slider.set(target["red"])
