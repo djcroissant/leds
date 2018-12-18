@@ -48,7 +48,6 @@ class TimerGroup:
 
     # led function
     self.led_func = led_func
-    self.strip = strip
 
   # start button handler
   def start_button_click(self):
@@ -56,7 +55,7 @@ class TimerGroup:
     minute = int(self.min.get())
     self.status.configure(text="Timer set for %d:%d" % (hour, minute))
     self.stopFlag = Event()
-    self.event_thread = TimerThread(self.stopFlag, hour, minute, self.recur, self.led_func, self.strip)
+    self.event_thread = TimerThread(self.stopFlag, hour, minute, self.recur, self.led_func, sunshine)
     self.event_thread.start()
 
   # cancel button handler
@@ -98,8 +97,9 @@ class SliderGroup:
       "green": self.green_slider.get(),
       "blue": self.blue_slider.get()    
     }
-    self.pixel.state = LedFunctions().custom_on(self.pixel, target)
-
+    print ("state:  ", self.pixel.state)
+    LedFunctions().custom_on(self.pixel, target)
+    print("state after:  ", self.pixel.state)
   def set_slider(self, target):
     self.red_slider.set(target["red"])
     self.green_slider.set(target["green"])

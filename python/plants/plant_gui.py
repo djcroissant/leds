@@ -67,7 +67,7 @@ def apply_preset_click():
     "awake evening": LedFunctions().awake_evening, 
     "bright warm": LedFunctions().bright_warm
   }
-  sunshine.state = preset_lookup[val](sunshine)
+  preset_lookup[val](sunshine)
   slider.set_slider(sunshine.state)
 
 # apply_preset button
