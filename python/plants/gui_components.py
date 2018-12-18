@@ -98,9 +98,7 @@ class SliderGroup:
       "green": self.green_slider.get(),
       "blue": self.blue_slider.get()    
     }
-    print ("state:  ", self.pixel.state)
     LedFunctions().custom_on(self.pixel, target)
-    print("state after:  ", self.pixel.state)
   def set_slider(self, target):
     self.red_slider.set(target["red"])
     self.green_slider.set(target["green"])

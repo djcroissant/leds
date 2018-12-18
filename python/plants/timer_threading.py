@@ -14,6 +14,7 @@ class TimerThread(Thread):
 
   def run(self):
     while not self.stopped.wait(self.delay):
+      print("print: ", self.pixel)
       self.led_func(self.pixel)
       self.stopped.set()
     if self.recur:
