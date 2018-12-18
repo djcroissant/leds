@@ -10,36 +10,30 @@ class LedFunctions:
     target = {"red": 0, "green": 0, "blue": 0} 
     self.transition(pixel, target)
 
-  def all_on(self, strip, state):
+  def all_on(self, pixel):
     target = {"red": 255, "green": 255, "blue": 255} 
-    self.transition(strip, state, target)
-    return target
+    self.transition(pixel, target)
 
-  def custom_on(self, strip, state, target):
-    self.transition(strip, state, target)
-    return target
+  def custom_on(self, pixel, target):
+    self.transition(pixel, target)
 
-  def awake_evening(self, strip, state):
+  def awake_evening(self, pixel):
     target = {"red": 100, "green": 30, "blue": 10} 
-    self.transition(strip, state, target)
-    return target
+    self.transition(pixel, target)
 
-  def bright_warm(self, strip, state):
+  def bright_warm(self, pixel):
     target = {"red": 200, "green": 60, "blue": 20} 
-    self.transition(strip, state, target)
-    return target
+    self.transition(pixel, target)
 
-  def dark_and_moody(self, strip, state):
+  def dark_and_moody(self, pixel):
     target = {"red": 70, "green": 15, "blue": 0} 
-    self.transition(strip, state, target)
-    return target
+    self.transition(pixel, target)
 
-  def sultry_dancing(self, strip, state):
+  def sultry_dancing(self, pixel):
     target = {"red": 120, "green": 15, "blue": 100} 
-    self.transition(strip, state, target)
-    return target
+    self.transition(pixel, target)
 
-  def sunrise(self, strip):
+  def sunrise(self, pixel):
     """ Red comes in during first third
         Green comes in during 2nd third
         Blue comes in during final third """
@@ -47,7 +41,7 @@ class LedFunctions:
     steps = 600
     wait_sec = duration * 60 / steps  # time to wait between each increment
     target = {"red": 255, "green": 255, "blue": 255}
-    state = sunshine.state
+    state = pixel.state
 
     red_tran = list(np.linspace(state["red"], target["red"], int(steps/3)))
     red_target = [target["red"]] * int(steps * 2 / 3)
@@ -66,22 +60,22 @@ class LedFunctions:
     print("green: ", green)
     print("blue: ", blue) 
     for i in range(steps):
-      sunshine.state = {"red": red[i], "green": green[i], "blue": blue[i]}
+      pixel.state = {"red": red[i], "green": green[i], "blue": blue[i]}
       color = Color(int(green[i]), int(red[i]), int(blue[i]))
       for j in range(strip.numPixels()):
-        strip.setPixelColor(j, color)
-      strip.show()
+        pixel.strip.setPixelColor(j, color)
+      pixel.strip.show()
       print("sunrise step %s of %s" % (i+1, steps))
       time.sleep(wait_sec)
 
-  def sunset(self, strip):
+  def sunset(self, pixel):
     """
     If lights are all fully on, then fade down to bright_warm setting
     If lights aren't fully on, do nothing
     """
-    state = sunshine.state
+    state = pixel.state
     if state["red"] > 200 and state["green"] > 200 and state["blue"] > 200:
-      sunshine.state = self.bright_warm(strip, sunshine.state)
+      pixel.state = self.bright_warm(pixel)
       
   def transition(self, pixel, target):
     num_pixels = pixel.strip.numPixels()

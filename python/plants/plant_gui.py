@@ -82,7 +82,7 @@ master_toggle_frame.pack()
 
 # master_on click handler
 def master_on_click():
-  sunshine.state = LedFunctions().all_on(sunshine.strip, sunshine.state)
+  sunshine.state = LedFunctions().all_on(sunshine)
   slider.set_slider(sunshine.state)
 
 # master_off click handler
