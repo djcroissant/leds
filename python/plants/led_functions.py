@@ -48,7 +48,7 @@ class LedFunctions:
     steps = 600
     wait_sec = duration * 60 / steps  # time to wait between each increment
     target = {"red": 255, "green": 255, "blue": 255}
-    state = Pix.state
+    state = sunshine.state
 
     red_tran = list(np.linspace(state["red"], target["red"], int(steps/3)))
     red_target = [target["red"]] * int(steps * 2 / 3)
@@ -67,7 +67,7 @@ class LedFunctions:
     print("green: ", green)
     print("blue: ", blue) 
     for i in range(steps):
-      Pix.state = {"red": red[i], "green": green[i], "blue": blue[i]}
+      sunshine.state = {"red": red[i], "green": green[i], "blue": blue[i]}
       color = Color(int(green[i]), int(red[i]), int(blue[i]))
       for j in range(strip.numPixels()):
         strip.setPixelColor(j, color)
@@ -80,9 +80,9 @@ class LedFunctions:
     If lights are all fully on, then fade down to bright_warm setting
     If lights aren't fully on, do nothing
     """
-    state = Pix.state
+    state = sunshine.state
     if state["red"] > 200 and state["green"] > 200 and state["blue"] > 200:
-      Pix.state = self.bright_warm(strip, Pix.state)
+      sunshine.state = self.bright_warm(strip, sunshine.state)
       
   def transition(self, strip, state, target):
     num_pixels = strip.numPixels()

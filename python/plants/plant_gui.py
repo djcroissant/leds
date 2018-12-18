@@ -29,11 +29,11 @@ timer_frame=Frame(root)
 timer_frame.pack()
 turn_on_frame = Frame(timer_frame, relief="groove")
 turn_on_frame.pack(side=LEFT)
-turn_on_timer = TimerGroup(turn_on_frame, LedFunctions.sunrise, Pix.strip, [0,0], "set a time to turn on")
+turn_on_timer = TimerGroup(turn_on_frame, LedFunctions.sunrise, sunshine.strip, [0,0], "set a time to turn on")
 
 turn_off_frame = Frame(timer_frame,  relief="groove")
 turn_off_frame.pack(side=LEFT)
-turn_off_timer = TimerGroup(turn_off_frame, LedFunctions.sunset, Pix.strip, [0,4], "set a time to turn on")
+turn_off_timer = TimerGroup(turn_off_frame, LedFunctions.sunset, sunshine.strip, [0,4], "set a time to turn on")
 
 
 #### SLIDER SECTION ####
@@ -67,8 +67,8 @@ def apply_preset_click():
     "awake evening": LedFunctions.awake_evening, 
     "bright warm": LedFunctions.bright_warm
   }
-  Pix.state = preset_lookup[val](Pix.strip, Pix.state)
-  slider.set_slider(Pix.state)
+  sunshine.state = preset_lookup[val](sunshine.strip, sunshine.state)
+  slider.set_slider(sunshine.state)
 
 # apply_preset button
 apply_preset = Button(preset_frame, text="Apply Preset", command=apply_preset_click)
@@ -82,13 +82,13 @@ master_toggle_frame.pack()
 
 # master_on click handler
 def master_on_click():
-  Pix.state = LedFunctions.all_on(Pix.strip, Pix.state)
-  slider.set_slider(Pix.state)
+  sunshine.state = LedFunctions.all_on(sunshine.strip, sunshine.state)
+  slider.set_slider(sunshine.state)
 
 # master_off click handler
 def master_off_click():
-  Pix.state = LedFunctions.all_off(Pix.strip, Pix.state)
-  slider.set_slider(Pix.state)
+  sunshine.state = LedFunctions.all_off(sunshine.strip, sunshine.state)
+  slider.set_slider(sunshine.state)
 
 # master_on button properties
 master_on = Button(master_toggle_frame, text="Lights ON", command=master_on_click)
