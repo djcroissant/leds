@@ -90,6 +90,7 @@ def master_off_click():
   LedFunctions().all_off(sunshine)
   print("state before slider set: ", sunshine.state)
   slider.set_slider(sunshine.state)
+  print("state after slider set: ", sunshine.state)
 
 # master_on button properties
 master_on = Button(master_toggle_frame, text="Lights ON", command=master_on_click)
