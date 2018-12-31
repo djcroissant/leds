@@ -6,7 +6,7 @@ from neopixel import *
 from timer_threading import TimerThread
 from led_functions import LedFunctions
 from common import Pix
-from gui_components import TimerGroup, SliderGroup
+from gui_components import TimerGroup, SliderGroup, PresetGroup
 
 from threading import Timer, Thread, Event
 
@@ -33,46 +33,21 @@ turn_on_timer = TimerGroup(turn_on_frame, LedFunctions().sunrise, sunshine, [0,0
 
 turn_off_frame = Frame(timer_frame,  relief="groove")
 turn_off_frame.pack(side=LEFT)
-turn_off_timer = TimerGroup(turn_off_frame, LedFunctions().sunset, sunshine, [0,4], "set a time to turn on")
+turn_off_timer = TimerGroup(turn_off_frame, LedFunctions().sunset, sunshine, [0,4], "set a time to turn off")
 
 
 #### SLIDER SECTION ####
-srow=0          # 0 to 2
-scol=0          # 0 to 0
 slider_frame = Frame(root, relief="groove")
 slider_frame.pack()
-
-slider = SliderGroup(slider_frame, srow, scol, sunshine)
+slider = SliderGroup(slider_frame, sunshine)
 
 
 #### PRESET SECTION ####
-row=0          # 0 to 2
-col=0          # 0 to 0
 preset_frame = Frame(root, relief="groove")
 preset_frame.pack()
+preset = PresetGroup(preset_frame, sunshine, slider)
 
-# preset dropdown
-preset_drop = Combobox(preset_frame)
-preset_drop['values']=("dark and moody", "sultry dancing", "awake evening", "bright warm")
-preset_drop.current(1)
-preset_drop.grid(row=row+0, column=col+0)
 
-# apply_preset click handler
-def apply_preset_click():
-  # check value, call function by same name
-  val = preset_drop.get()
-  preset_lookup = {
-    "dark and moody": LedFunctions().dark_and_moody, 
-    "sultry dancing": LedFunctions().sultry_dancing, 
-    "awake evening": LedFunctions().awake_evening, 
-    "bright warm": LedFunctions().bright_warm
-  }
-  preset_lookup[val](sunshine)
-  slider.set_slider(sunshine.state)
-
-# apply_preset button
-apply_preset = Button(preset_frame, text="Apply Preset", command=apply_preset_click)
-apply_preset.grid(row=row+0, column=col+1)
 
 #### MASTER TOGGLE SECTION ####
 row=0          # 0 to 2
