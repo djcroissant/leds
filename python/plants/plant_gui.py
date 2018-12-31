@@ -6,7 +6,7 @@ from neopixel import *
 from timer_threading import TimerThread
 from led_functions import LedFunctions
 from common import Pix
-from gui_components import TimerGroup, SliderGroup, PresetGroup
+from gui_components import TimerGroup, SliderGroup, PresetGroup, MasterToggleGroup
 
 from threading import Timer, Thread, Event
 
@@ -48,31 +48,10 @@ preset_frame.pack()
 preset = PresetGroup(preset_frame, sunshine, slider)
 
 
-
 #### MASTER TOGGLE SECTION ####
-row=0          # 0 to 2
-col=0          # 0 to 0
 master_toggle_frame = Frame(root, relief="groove")
 master_toggle_frame.pack()
-
-# master_on click handler
-def master_on_click():
-  LedFunctions().all_on(sunshine)
-  slider.set_slider(sunshine.state)
-
-# master_off click handler
-def master_off_click():
-  LedFunctions().all_off(sunshine)
-  slider.set_slider(sunshine.state)
-
-# master_on button properties
-master_on = Button(master_toggle_frame, text="Lights ON", command=master_on_click)
-master_on.grid(row=row+0, column=col+0)
-
-# master_off button properties
-master_off = Button(master_toggle_frame, text="Lights OFF", command=master_off_click)
-master_off.grid(row=row+0, column=col+1)
-
+master_toggle = MasterToggleGroup(master_toggle_frame, sunshine, slider)
 
  
 root.mainloop()

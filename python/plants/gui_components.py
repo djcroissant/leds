@@ -144,3 +144,34 @@ class PresetGroup:
     }
     preset_lookup[val](self.pixel)
     self.slider.set_slider(self.pixel.state)
+
+
+class MasterToggleGroup:
+  def __init__(self, frame, pixel, slider):
+    self.pixel = pixel
+    self.slider = slider
+
+    # set reference value for row and col.
+    # to add content fefore (0,0), increase the reference value by 1 and
+    # set row=self.rrow-1 or col=self.rcol-1
+    self.rrow=0
+    self.rcol=0
+
+    # master_on button properties
+    self.master_on = Button(frame, text="Lights ON", command=self.master_on_click)
+    self.master_on.grid(row=self.rrow+0, column=self.rcol+0)
+
+    # master_off button properties
+    self.master_off = Button(frame, text="Lights OFF", command=self.master_off_click)
+    self.master_off.grid(row=self.rrow+0, column=self.rcol+1)
+
+  # master_on click handler
+  def master_on_click(self):
+    LedFunctions().all_on(self.pixel)
+    self.slider.set_slider(self.pixel.state)
+
+  # master_off click handler
+  def master_off_click(self):
+    LedFunctions().all_off(self.pixel)
+    self.slider.set_slider(self.pixel.state)
+
