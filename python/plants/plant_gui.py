@@ -6,7 +6,7 @@ from neopixel import *
 from timer_threading import TimerThread
 from led_functions import LedFunctions
 from common import Pix
-from gui_components import TimerGroup, SliderGroup, PresetGroup, MasterToggleGroup
+from gui_components import TimerGroup, SliderGroup, PresetGroup, MasterToggleGroup, WebToggleGroup
 
 from threading import Timer, Thread, Event
 

@@ -193,14 +193,13 @@ class WebToggleGroup:
     self.web_on.grid(row=self.rrow+0, column=self.rcol+0)
 
     # web_off button properties
-    self.web_off = Button(frame, text="Lights OFF", command=self.web_off_click)
+    self.web_off = Button(frame, text="Web Disconnect", command=self.web_off_click)
     self.web_off.grid(row=self.rrow+0, column=self.rcol+1)
 
   # web_on click handler
   def web_on_click(self):
     self.event_thread = WebTimerThread(self.stopFlag)
     self.event_thread.start()
-
 
   # web_off click handler
   def web_off_click(self):
