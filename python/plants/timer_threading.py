@@ -7,6 +7,8 @@ from led_functions import LedFunctions
 import socket
 from urllib2 import urlopen, URLError, HTTPError
 
+import json
+
 
 class TimerThread(Thread):
   def __init__(self, event, hour, minute, recur, led_func, pixel):
@@ -52,6 +54,8 @@ class WebTimerThread(Thread):
       except URLError, e:
           print 'We failed to reach a server. Reason:', str(e.reason)
       else :
-          data = response.read()
-          led_data = {"red": int(data["red"]), "green": int(data["green"]), "blue": int(data["blue"])}
-          LedFunctions().custom_on(self.pixel, led_data)
+          data = json.load(response)
+          print(data)
+          for k in data:
+              data[k] = int(data[k])
+          LedFunctions().custom_on(self.pixel, data)
