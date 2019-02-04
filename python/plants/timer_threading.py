@@ -53,4 +53,5 @@ class WebTimerThread(Thread):
           print 'We failed to reach a server. Reason:', str(e.reason)
       else :
           data = response.read()
-          LedFunctions().custom_on(self.pixel, data)
+          led_data = {"red": int(data["red"]), "green": int(data["green"]), "blue": int(data["blue"])}
+          LedFunctions().custom_on(self.pixel, led_data)
