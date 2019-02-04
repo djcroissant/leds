@@ -7,6 +7,10 @@ from led_functions import LedFunctions
 
 from threading import Timer, Thread, Event
 
+import socket
+from urllib2 import urlopen, URLError, HTTPError
+
+
 
 class TimerGroup:
   def __init__(self, frame, led_func, pixel, ref=[0,0], title=""):
@@ -175,3 +179,52 @@ class MasterToggleGroup:
     LedFunctions().all_off(self.pixel)
     self.slider.set_slider(self.pixel.state)
 
+class WebToggleGroup:
+  def __init__(self, frame, pixel, slider):
+    self.stopFlag = Event()
+    self.delay = 1      # second
+    self.pixel = pixel
+    self.slider = slider
+
+    # set reference value for row and col.
+    # to add content fefore (0,0), increase the reference value by 1 and
+    # set row=self.rrow-1 or col=self.rcol-1
+    self.rrow=0
+    self.rcol=0
+
+    # web_on button properties
+    self.web_on = Button(frame, text="Web Connect", command=self.web_on_click)
+    self.web_on.grid(row=self.rrow+0, column=self.rcol+0)
+
+    # web_off button properties
+    self.web_off = Button(frame, text="Lights OFF", command=self.web_off_click)
+    self.web_off.grid(row=self.rrow+0, column=self.rcol+1)
+
+  # web_on click handler
+  def web_on_click(self):
+
+    socket.setdefaulttimeout( 23 )  # timeout in seconds
+
+    url = 'http://api.open-notify.org/iss-now.json'
+    
+    while not self.stopped.wait(self.delay):
+      try :
+          response = urlopen( url )
+      except HTTPError, e:
+          print 'The server couldn\'t fulfill the request. Reason:', str(e.code)
+      except URLError, e:
+          print 'We failed to reach a server. Reason:', str(e.reason)
+      else :
+          data = response.read()
+          print 'got response!'
+          print(data)
+          # do something, turn the light on/off or whatever
+
+          # LedFunctions().all_on(self.pixel)
+          # self.slider.set_slider(self.pixel.state)
+
+  # web_off click handler
+  def web_off_click(self):
+    self.stopFlag.set()
+    # LedFunctions().all_off(self.pixel)
+    # self.slider.set_slider(self.pixel.state)

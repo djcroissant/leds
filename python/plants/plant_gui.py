@@ -53,5 +53,10 @@ master_toggle_frame = Frame(root, relief="groove")
 master_toggle_frame.pack()
 master_toggle = MasterToggleGroup(master_toggle_frame, sunshine, slider)
 
+#### WEB TOGGLE SECTION ####
+web_toggle_frame = Frame(root, relief="groove")
+web_toggle_frame.pack()
+web_toggle = WebToggleGroup(web_toggle_frame, sunshine, slider)
+
  
 root.mainloop()
