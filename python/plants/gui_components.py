@@ -198,7 +198,7 @@ class WebToggleGroup:
 
   # web_on click handler
   def web_on_click(self):
-    self.event_thread = WebTimerThread(self.stopFlag)
+    self.event_thread = WebTimerThread(self.stopFlag, self.pixel)
     self.event_thread.start()
 
   # web_off click handler

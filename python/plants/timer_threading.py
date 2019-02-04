@@ -2,6 +2,8 @@ import time
 from datetime import datetime
 from threading import Timer, Thread, Event
 
+from led_functions import LedFunctions
+
 import socket
 from urllib2 import urlopen, URLError, HTTPError
 
@@ -32,15 +34,13 @@ class TimerThread(Thread):
     return delta_t.seconds
 
 class WebTimerThread(Thread):
-  def __init__(self, event): #, led_func, pixel):
+  def __init__(self, event, pixel):
     Thread.__init__(self)
+    self.pixel = pixel
     self.stopped = event
     self.delay = 1   # second
-    self.url = 'http://api.open-notify.org/iss-now.json'
+    self.url = 'http://verdanceproject.com/leds/json-data'
     
-    # self.led_func = led_func
-    # self.pixel = pixel
-
   def run(self):
     socket.setdefaulttimeout( 23 )  # timeout in seconds
 
@@ -53,5 +53,4 @@ class WebTimerThread(Thread):
           print 'We failed to reach a server. Reason:', str(e.reason)
       else :
           data = response.read()
-          print 'got response!'
-          print(data) 
+          LedFunctions.custom_on(pixel, data)
