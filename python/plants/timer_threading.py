@@ -2,6 +2,10 @@ import time
 from datetime import datetime
 from threading import Timer, Thread, Event
 
+import socket
+from urllib2 import urlopen, URLError, HTTPError
+
+
 class TimerThread(Thread):
   def __init__(self, event, hour, minute, recur, led_func, pixel):
     Thread.__init__(self)
@@ -26,3 +30,28 @@ class TimerThread(Thread):
     future_time = now.replace(hour=hour, minute = minute)
     delta_t = future_time - now
     return delta_t.seconds
+
+class WebTimerThread(Thread):
+  def __init__(self, event): #, led_func, pixel):
+    Thread.__init__(self)
+    self.stopped = event
+    self.delay = 1   # second
+    self.url = 'http://api.open-notify.org/iss-now.json'
+    
+    # self.led_func = led_func
+    # self.pixel = pixel
+
+  def run(self):
+    socket.setdefaulttimeout( 23 )  # timeout in seconds
+
+    while not self.stopped.wait(self.delay):
+      try :
+          response = urlopen( self.url )
+      except HTTPError, e:
+          print 'The server couldn\'t fulfill the request. Reason:', str(e.code)
+      except URLError, e:
+          print 'We failed to reach a server. Reason:', str(e.reason)
+      else :
+          data = response.read()
+          print 'got response!'
+          print(data) 

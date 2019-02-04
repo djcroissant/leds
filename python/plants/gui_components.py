@@ -2,14 +2,10 @@ from Tkinter import *
 from ttk import *
 
 from common import Pix
-from timer_threading import TimerThread
+from timer_threading import TimerThread, WebTimerThread
 from led_functions import LedFunctions
 
 from threading import Timer, Thread, Event
-
-import socket
-from urllib2 import urlopen, URLError, HTTPError
-
 
 
 class TimerGroup:
@@ -202,26 +198,9 @@ class WebToggleGroup:
 
   # web_on click handler
   def web_on_click(self):
+    self.event_thread = WebTimerThread(self.stopFlag)
+    self.event_thread.start()
 
-    socket.setdefaulttimeout( 23 )  # timeout in seconds
-
-    url = 'http://api.open-notify.org/iss-now.json'
-    
-    while not self.stopped.wait(self.delay):
-      try :
-          response = urlopen( url )
-      except HTTPError, e:
-          print 'The server couldn\'t fulfill the request. Reason:', str(e.code)
-      except URLError, e:
-          print 'We failed to reach a server. Reason:', str(e.reason)
-      else :
-          data = response.read()
-          print 'got response!'
-          print(data)
-          # do something, turn the light on/off or whatever
-
-          # LedFunctions().all_on(self.pixel)
-          # self.slider.set_slider(self.pixel.state)
 
   # web_off click handler
   def web_off_click(self):
