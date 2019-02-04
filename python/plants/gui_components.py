@@ -197,7 +197,7 @@ class WebToggleGroup:
     self.web_on.grid(row=self.rrow+0, column=self.rcol+0)
 
     # web_off button properties
-    self.web_off = Button(frame, text="Lights OFF", command=self.web_off_click)
+    self.web_off = Button(frame, text="Web Disconnect", command=self.web_off_click)
     self.web_off.grid(row=self.rrow+0, column=self.rcol+1)
 
   # web_on click handler
@@ -207,7 +207,7 @@ class WebToggleGroup:
 
     url = 'http://api.open-notify.org/iss-now.json'
     
-    while not self.stopped.wait(self.delay):
+    while not self.stopFlag.wait(self.delay):
       try :
           response = urlopen( url )
       except HTTPError, e:
